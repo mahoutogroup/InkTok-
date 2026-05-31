@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <!-- ============================================================
+       INKTOK — Réseau Social Vidéo pour Professionnels des Arts Visuels
+       ©2026 MAHOUTO X-PRO BY MAJESTÉ PRESSE
+       ============================================================ -->
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="InkTok — Le réseau social vidéo dédié aux professionnels de la sérigraphie, imprimerie, graphisme et design." />
+  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- iOS PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="InkTok" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="InkTok — Arts Visuels en Vidéo" />
+  <meta property="og:description" content="Le réseau social vidéo pour sérigraphes, imprimeurs, graphistes et designers." />
+  <meta property="og:type" content="website" />
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Fonts : Bebas Neue pour le display + DM Sans pour le corps -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Cinzel:wght@700&display=swap" rel="stylesheet" />
+
+  <title>InkTok — Arts Visuels</title>
+
+  <style>
+    /* ============================================================
+       VARIABLES & RESET
+       ============================================================ */
+    :root {
+      --bg-deep:       #07070d;
+      --bg-card:       #0f0f18;
+      --bg-overlay:    rgba(7, 7, 13, 0.72);
+
+      --gold:          #c9a84c;
+      --gold-light:    #e8cc7a;
+      --gold-dim:      #7a5f28;
+
+      --magenta:       #d4317a;
+      --violet:        #7b2fd4;
+      --violet-light:  #a66df5;
+
+      --grad-main:     linear-gradient(135deg, #d4317a 0%, #7b2fd4 50%, #c9a84c 100%);
+      --grad-gold:     linear-gradient(90deg, #c9a84c, #e8cc7a, #c9a84c);
+      --grad-neon:     linear-gradient(135deg, #d4317a, #7b2fd4);
+
+      --text-primary:  #f0eee8;
+      --text-muted:    rgba(240,238,232,0.55);
+      --text-dim:      rgba(240,238,232,0.30);
+
+      --nav-h:         68px;
+      --safe-bottom:   env(safe-area-inset-bottom, 0px);
+
+      --radius-pill:   999px;
+      --radius-card:   16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      overscroll-behavior: none;
+      overflow: hidden;
+    }
+
+    /* ============================================================
+       HEADER / TOP BAR
+       ============================================================ */
+    #topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      padding-top: calc(14px + env(safe-area-inset-top, 0px));
+      background: linear-gradient(to bottom, rgba(7,7,13,0.9) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    #topbar .logo {
+      pointer-events: all;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 3px;
+      background: var(--grad-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+    }
+
+    #topbar .logo span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      background: var(--grad-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+      margin-top: -6px;
+    }
+
+    #topbar .top-tabs {
+      pointer-events: all;
+      display: flex;
+      gap: 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .top-tab { color: var(--text-muted); cursor: pointer; transition: color .2s; }
+    .top-tab.active {
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 2px;
+    }
+
+    #topbar .top-search {
+      pointer-events: all;
+      width: 34px; height: 34px;
+      background: rgba(255,255,255,0.08);
+      border-radius: var(--radius-pill);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ============================================================
+       FEED — SCROLL SNAP VERTICAL
+       ============================================================ */
+    #feed {
+      position: fixed;
+      inset: 0;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    #feed::-webkit-scrollbar { display: none; }
+
+    /* ============================================================
+       CARTE VIDÉO
+       ============================================================ */
+    .video-card {
+      position: relative;
+      width: 100%;
+      height: 100dvh; /* dynamic viewport height pour mobile */
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      overflow: hidden;
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Faux lecteur vidéo stylisé (placeholder) */
+    .video-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .video-bg .art-canvas {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+
+    /* Motif de fond unique pour chaque carte */
+    .video-card:nth-child(1) .art-canvas { background: radial-gradient(ellipse at 30% 40%, #2a0a3e 0%, #07070d 60%), linear-gradient(180deg, #1a0030 0%, #07070d 100%); }
+    .video-card:nth-child(2) .art-canvas { background: radial-gradient(ellipse at 70% 60%, #3a1200 0%, #07070d 60%), linear-gradient(180deg, #1a0800 0%, #07070d 100%); }
+    .video-card:nth-child(3) .art-canvas { background: radial-gradient(ellipse at 50% 30%, #001a2e 0%, #07070d 60%), linear-gradient(180deg, #000f1a 0%, #07070d 100%); }
+    .video-card:nth-child(4) .art-canvas { background: radial-gradient(ellipse at 20% 70%, #1a002a 0%, #07070d 60%), linear-gradient(180deg, #100020 0%, #07070d 100%); }
+
+    /* Grain texture overlay */
+    .video-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Icône centrale du lecteur */
+    .play-btn {
+      position: absolute;
+      z-index: 2;
+      width: 64px; height: 64px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius-pill);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: transform .15s, opacity .2s;
+    }
+    .play-btn:active { transform: scale(0.92); }
+    .play-btn svg { margin-left: 4px; }
+
+    /* Art décoratif dans les cartes */
+    .deco-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid;
+      opacity: 0.15;
+      animation: ringPulse 4s ease-in-out infinite;
+    }
+    @keyframes ringPulse {
+      0%, 100% { transform: scale(1); opacity: 0.15; }
+      50%       { transform: scale(1.08); opacity: 0.08; }
+    }
+
+    .deco-line {
+      position: absolute;
+      background: var(--grad-main);
+      border-radius: var(--radius-pill);
+      opacity: 0.3;
+    }
+
+    /* Barre de progression */
+    .progress-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: rgba(255,255,255,0.15);
+      z-index: 5;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--grad-gold);
+      border-radius: var(--radius-pill);
+      animation: videoProgress 12s linear infinite;
+    }
+    @keyframes videoProgress {
+      from { width: 0%; }
+      to   { width: 100%; }
+    }
+
+    /* ============================================================
+       OVERLAY GRADIENT BAS
+       ============================================================ */
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(7,7,13,0.92) 0%,
+        rgba(7,7,13,0.5) 30%,
+        transparent 60%
+      );
+      z-index: 3;
+    }
+
+    /* ============================================================
+       INFOS CRÉATEUR (BAS GAUCHE)
+       ============================================================ */
+    .card-info {
+      position: absolute;
+      bottom: 80px;
+      left: 16px;
+      right: 80px;
+      z-index: 4;
+    }
+
+    .creator-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .creator-avatar {
+      width: 42px; height: 42px;
+      border-radius: var(--radius-pill);
+      background: var(--grad-main);
+      border: 2px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 16px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .creator-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .follow-btn {
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--gold);
+      background: transparent;
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+      flex-shrink: 0;
+    }
+    .follow-btn:active { background: var(--gold); color: #07070d; }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--violet-light);
+    }
+
+    .sound-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .sound-row svg { animation: soundSpin 4s linear infinite; }
+    @keyframes soundSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .sound-label { font-size: 11px; color: var(--text-muted); }
+
+    /* ============================================================
+       BARRE LATÉRALE DROITE (INTERACTIONS)
+       ============================================================ */
+    .side-actions {
+      position: absolute;
+      right: 12px;
+      bottom: 90px;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .action-icon {
+      width: 48px; height: 48px;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .15s, background .2s;
+    }
+    .action-btn:active .action-icon { transform: scale(0.88); }
+    .action-btn.liked .action-icon  { background: rgba(212,49,122,0.25); border-color: var(--magenta); }
+
+    .action-count {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    /* ============================================================
+       FOOTER BRAND (juste au-dessus de la nav)
+       ============================================================ */
+    #brand-footer {
+      position: fixed;
+      bottom: calc(var(--nav-h) + var(--safe-bottom));
+      left: 0; right: 0;
+      z-index: 90;
+      text-align: center;
+      padding: 5px 0;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(7,7,13,0.8) 0%, transparent 100%);
+    }
+
+    #brand-footer p {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      background: var(--grad-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0.75;
+    }
+
+    /* ============================================================
+       BOTTOM NAVIGATION BAR
+       ============================================================ */
+    #bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: calc(var(--nav-h) + var(--safe-bottom));
+      padding-bottom: var(--safe-bottom);
+      z-index: 100;
+      background: rgba(7, 7, 13, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 12px;
+      transition: background .2s;
+      min-width: 52px;
+    }
+    .nav-item:active { background: rgba(255,255,255,0.06); }
+
+    .nav-label {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-dim);
+      transition: color .2s;
+    }
+    .nav-item.active .nav-label { color: var(--gold-light); }
+    .nav-item.active svg path,
+    .nav-item.active svg circle,
+    .nav-item.active svg rect { stroke: var(--gold-light) !important; }
+
+    /* Bouton CRÉER (central) */
+    .nav-create {
+      position: relative;
+      width: 54px; height: 38px;
+      border-radius: 12px;
+      background: var(--grad-neon);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(123,47,212,0.5), 0 0 40px rgba(212,49,122,0.3);
+      cursor: pointer;
+      transition: transform .15s, box-shadow .2s;
+      flex-shrink: 0;
+    }
+    .nav-create:active { transform: scale(0.93); box-shadow: 0 0 10px rgba(123,47,212,0.3); }
+    .nav-create::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 13px;
+      background: var(--grad-main);
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    /* ============================================================
+       TOAST NOTIFICATION
+       ============================================================ */
+    .toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.85);
+      background: rgba(15,15,24,0.95);
+      border: 1px solid var(--gold-dim);
+      border-radius: 14px;
+      padding: 14px 24px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gold-light);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s, transform .25s;
+      backdrop-filter: blur(16px);
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* ============================================================
+       SHIMMER LOADING STATE
+       ============================================================ */
+    @keyframes shimmer {
+      from { background-position: -200% 0; }
+      to   { background-position:  200% 0; }
+    }
+    .shimmer {
+      background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 2s infinite;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       TOP BAR
+       ============================================================ -->
+  <header id="topbar">
+    <div class="logo">
+      InkTok
+      <span>Arts Visuels Pro</span>
+    </div>
+
+    <nav class="top-tabs">
+      <span class="top-tab" onclick="switchFeed(this, 'live')">Live</span>
+      <span class="top-tab active" onclick="switchFeed(this, 'pour-toi')">Pour Toi</span>
+      <span class="top-tab" onclick="switchFeed(this, 'abonnements')">Abonnements</span>
+    </nav>
+
+    <div class="top-search" onclick="showToast('🔍 Recherche bientôt disponible')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(240,238,232,0.7)" stroke-width="2.2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       FEED VERTICAL
+       ============================================================ -->
+  <main id="feed">
+
+    <!-- ── CARTE 1 ── -->
+    <article class="video-card" data-id="1">
+      <div class="video-bg">
+        <div class="art-canvas">
+          <!-- Éléments décoratifs -->
+          <div class="deco-ring" style="width:280px;height:280px;border-color:#7b2fd4;top:15%;left:-20%;"></div>
+          <div class="deco-ring" style="width:180px;height:180px;border-color:#c9a84c;bottom:25%;right:-10%;animation-delay:-2s;"></div>
+          <div class="deco-line" style="width:1px;height:200px;top:20%;left:45%;transform:rotate(15deg);"></div>
+          <div class="deco-line" style="width:80px;height:1px;top:60%;left:10%;"></div>
+
+          <!-- Texte art simulé -->
+          <div style="text-align:center;z-index:2;padding:20px;">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:4px;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;opacity:0.9;">SÉRIGRA<br>PHIE</div>
+            <div style="font-size:11px;letter-spacing:3px;color:var(--gold);margin-top:8px;text-transform:uppercase;font-weight:500;">Impression sur T-shirt · Technique eau</div>
+          </div>
+
+          <!-- Icône play -->
+          <div class="play-btn" id="play1" onclick="togglePlay(this, 'play1')">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(240,238,232,0.9)">
+              <polygon points="5,3 19,12 5,21"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="card-overlay"></div>
+
+      <!-- Infos créateur -->
+      <div class="card-info">
+        <div class="creator-row">
+          <div class="creator-avatar">MP</div>
+          <div>
+            <div class="creator-name">@MajestePresse</div>
+          </div>
+          <button class="follow-btn" onclick="toggleFollow(this)">+ Suivre</button>
+        </div>
+        <p class="card-title">Technique impression eau sur coton — résultats incroyables 🔥 Commande en cours pour 200 pièces.</p>
+        <div class="card-tags">
+          <span class="tag">#Sérigraphie</span>
+          <span class="tag">#Impression</span>
+          <span class="tag">#Cotonou</span>
+        </div>
+        <div class="sound-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/>
+          </svg>
+          <span class="sound-label">Son original — MajestePresse</span>
+        </div>
+      </div>
+
+      <!-- Actions latérales -->
+      <div class="side-actions">
+        <div class="action-btn" onclick="toggleLike(this)">
+          <div class="action-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <span class="action-count">4.8K</span>
+        </div>
+        <div class="action-btn" onclick="showToast('💬 Commentaires bientôt disponibles')">
+          <div class="action-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-count">312</span>
+        </div>
+        <div class="action-btn" onclick="shareCard()">
+          <div class="action-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </div>
+          <span class="action-count">Partager</span>
+        </div>
+        <div class="action-btn" onclick="showToast('🔖 Sauvegardé !')">
+          <div class="action-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-count">Sauv.</span>
+        </div>
+      </div>
+
+      <div class="progress-bar"><div class="progress-fill" style="animation-delay:0s;"></div></div>
+    </article>
+
+    <!-- ── CARTE 2 ── -->
+    <article class="video-card" data-id="2">
+      <div class="video-bg">
+        <div class="art-canvas">
+          <div class="deco-ring" style="width:320px;height:320px;border-color:#d4317a;top:-10%;right:-15%;"></div>
+          <div class="deco-ring" style="width:150px;height:150px;border-color:#c9a84c;bottom:30%;left:5%;animation-delay:-1.5s;"></div>
+          <div class="deco-line" style="width:120px;height:1px;bottom:40%;right:15%;background:var(--grad-gold);opacity:0.5;"></div>
+
+          <div style="text-align:center;z-index:2;padding:24px;">
+            <div style="font-family:'Cinzel',serif;font-size:13px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;">Atelier Design</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:2px;color:var(--text-primary);line-height:1;opacity:0.95;">LOGO<br><span style="background:var(--grad-neon);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">BRANDING</span></div>
+            <div style="width:60px;height:2px;background:var(--grad-gold);margin:16px auto;border-radius:999px;"></div>
+            <div style="font-size:12px;color:var(--text-muted);letter-spacing:1px;">Process complet en 60 secondes</div>
+          </div>
+
+          <div class="play-btn" id="play2" onclick="togglePlay(this, 'play2')">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(240,238,232,0.9)">
+              <polygon points="5,3 19,12 5,21"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="card-overlay"></div>
+
+      <div class="card-info">
+        <div class="creator-row">
+          <div class="creator-avatar" style="background:var(--grad-gold);color:#07070d;">GD</div>
+          <div>
+            <div class="creator-name">@GraphiqueDesigns</div>
+          </div>
+          <button class="follow-btn" onclick="toggleFollow(this)">+ Suivre</button>
+        </div>
+        <p class="card-title">Identité visuelle complète pour une marque de prêt-à-porter ✏️ De l'esquisse au fichier final.</p>
+        <div class="card-tags">
+          <span class="tag">#Graphisme</span>
+          <span class="tag">#Branding</span>
+          <span class="tag">#LogoDesign</span>
+        </div>
+        <div class="sound-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/>
+          </svg>
+          <span class="sound-label">Lofi Design Session — Vol.3</span>
+        </div>
+      </div>
+
+      <div class="side-actions">
+        <div class="action-btn" onclick="toggleLike(this)">
+          <div class="action-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <span class="action-count">12.1K</span>
+        </div>
+        <div class="action-btn" onclick="showToast('💬 Commentaires bientôt disponibles')">
+          <div class="action-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-count">879</span>
+        </div>
+        <div class="action-btn" onclick="shareCard()">
+          <div class="action-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </div>
+          <span class="action-count">Partager</span>
+        </div>
+        <div class="action-btn" onclick="showToast('🔖 Sauvegardé !')">
+          <div class="action-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-count">Sauv.</span>
+        </div>
+      </div>
+
+      <div class="progress-bar"><div class="progress-fill" style="animation-delay:-4s;"></div></div>
+    </article>
+
+    <!-- ── CARTE 3 ── -->
+    <article class="video-card" data-id="3">
+      <div class="video-bg">
+        <div class="art-canvas">
+          <div class="deco-ring" style="width:240px;height:240px;border-color:#c9a84c;top:30%;left:50%;transform:translateX(-50%);"></div>
+          <div class="deco-line" style="width:1px;height:300px;top:0;left:30%;opacity:0.2;"></div>
+          <div class="deco-line" style="width:1px;height:200px;top:10%;right:25%;opacity:0.15;animation-delay:-1s;"></div>
+
+          <div style="text-align:center;z-index:2;padding:24px;">
+            <div style="font-size:10px;letter-spacing:4px;color:var(--magenta);text-transform:uppercase;font-weight:600;margin-bottom:12px;">Imprimerie Offset</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:58px;letter-spacing:3px;line-height:1;color:var(--text-primary);">FLYERS<br><span style="color:var(--gold);">5000 EX</span></div>
+            <div style="margin-top:20px;display:flex;justify-content:center;gap:16px;">
+              <div style="text-align:center;">
+                <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--violet-light);">4</div>
+                <div style="font-size:9px;color:var(--text-muted);letter-spacing:1px;">COULEURS</div>
+              </div>
+              <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+              <div style="text-align:center;">
+                <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--violet-light);">135</div>
+                <div style="font-size:9px;color:var(--text-muted);letter-spacing:1px;">G/M²</div>
+              </div>
+              <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+              <div style="text-align:center;">
+                <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);">A5</div>
+                <div style="font-size:9px;color:var(--text-muted);letter-spacing:1px;">FORMAT</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="play-btn" id="play3" onclick="togglePlay(this, 'play3')">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(240,238,232,0.9)">
+              <polygon points="5,3 19,12 5,21"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="card-overlay"></div>
+
+      <div class="card-info">
+        <div class="creator-row">
+          <div class="creator-avatar" style="background:linear-gradient(135deg,#c9a84c,#7b2fd4);color:#fff;">PI</div>
+          <div>
+            <div class="creator-name">@PrinterInk_Dakar</div>
+          </div>
+          <button class="follow-btn" onclick="toggleFollow(this)">+ Suivre</button>
+        </div>
+        <p class="card-title">Sortie de presse : 5000 flyers A5 pour un événement culturel 🎨 Quadrichromie + vernis spot.</p>
+        <div class="card-tags">
+          <span class="tag">#Imprimerie</span>
+          <span class="tag">#Offset</span>
+          <span class="tag">#Afrique</span>
+        </div>
+        <div class="sound-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/>
+          </svg>
+          <span class="sound-label">PrintVibes — Machine RYOBI</span>
+        </div>
+      </div>
+
+      <div class="side-actions">
+        <div class="action-btn" onclick="toggleLike(this)">
+          <div class="action-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <span class="action-count">7.3K</span>
+        </div>
+        <div class="action-btn" onclick="showToast('💬 Commentaires bientôt disponibles')">
+          <div class="action-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-count">441</span>
+        </div>
+        <div class="action-btn" onclick="shareCard()">
+          <div class="action-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </div>
+          <span class="action-count">Partager</span>
+        </div>
+        <div class="action-btn" onclick="showToast('🔖 Sauvegardé !')">
+          <div class="action-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-count">Sauv.</span>
+        </div>
+      </div>
+
+      <div class="progress-bar"><div class="progress-fill" style="animation-delay:-8s;"></div></div>
+    </article>
+
+    <!-- ── CARTE 4 ── -->
+    <article class="video-card" data-id="4">
+      <div class="video-bg">
+        <div class="art-canvas">
+          <div class="deco-ring" style="width:200px;height:200px;border-color:#a66df5;top:20%;right:5%;"></div>
+          <div class="deco-ring" style="width:350px;height:350px;border-color:#d4317a;bottom:-10%;left:-10%;animation-delay:-3s;"></div>
+
+          <div style="text-align:center;z-index:2;padding:24px;">
+            <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:5px;background:var(--grad-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-transform:uppercase;margin-bottom:16px;">Formation Pro</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:50px;color:var(--text-primary);letter-spacing:2px;line-height:1.1;">MAJESTÉ<br>PRESSE<br><span style="background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">ACADÉMIE</span></div>
+            <div style="margin-top:18px;font-size:12px;color:var(--text-muted);max-width:220px;line-height:1.5;">Rejoins 100 jeunes en formation sérigraphie, graphisme & impression · Cotonou, Bénin</div>
+          </div>
+
+          <div class="play-btn" id="play4" onclick="togglePlay(this, 'play4')">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(240,238,232,0.9)">
+              <polygon points="5,3 19,12 5,21"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="card-overlay"></div>
+
+      <div class="card-info">
+        <div class="creator-row">
+          <div class="creator-avatar" style="background:var(--grad-main);color:#fff;font-size:13px;">MA</div>
+          <div>
+            <div class="creator-name">@MajestePresse_Académie</div>
+          </div>
+          <button class="follow-btn" style="border-color:var(--violet-light);color:var(--violet-light);" onclick="toggleFollow(this)">+ Suivre</button>
+        </div>
+        <p class="card-title">Inscriptions ouvertes 2026 🎓 Formation gratuite en sérigraphie pour jeunes sans emploi et orphelins.</p>
+        <div class="card-tags">
+          <span class="tag">#Formation</span>
+          <span class="tag">#Bénin</span>
+          <span class="tag">#Sérigraphie</span>
+          <span class="tag">#Jeunesse</span>
+        </div>
+        <div class="sound-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/>
+          </svg>
+          <span class="sound-label">Son original — Majesté Académie</span>
+        </div>
+      </div>
+
+      <div class="side-actions">
+        <div class="action-btn" onclick="toggleLike(this)">
+          <div class="action-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <span class="action-count">21.4K</span>
+        </div>
+        <div class="action-btn" onclick="showToast('💬 Commentaires bientôt disponibles')">
+          <div class="action-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-count">1.2K</span>
+        </div>
+        <div class="action-btn" onclick="shareCard()">
+          <div class="action-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </div>
+          <span class="action-count">Partager</span>
+        </div>
+        <div class="action-btn" onclick="showToast('🔖 Sauvegardé !')">
+          <div class="action-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-count">Sauv.</span>
+        </div>
+      </div>
+
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+    </article>
+
+  </main><!-- /feed -->
+
+  <!-- ============================================================
+       FOOTER BRAND
+       ============================================================ -->
+  <div id="brand-footer">
+    <p>©2026 MAHOUTO X-PRO BY MAJESTÉ PRESSE</p>
+  </div>
+
+  <!-- ============================================================
+       BOTTOM NAVIGATION BAR
+       ============================================================ -->
+  <nav id="bottom-nav">
+
+    <!-- Accueil -->
+    <div class="nav-item active" onclick="switchNav(this, 'home')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2" stroke-linecap="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span class="nav-label" style="color:var(--gold-light);">Accueil</span>
+    </div>
+
+    <!-- Découvrir -->
+    <div class="nav-item" onclick="switchNav(this, 'discover')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(240,238,232,0.4)" stroke-width="2" stroke-linecap="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <span class="nav-label">Découvrir</span>
+    </div>
+
+    <!-- CRÉER (bouton central) -->
+    <div class="nav-create" onclick="showToast('🎬 Création vidéo bientôt disponible')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </div>
+
+    <!-- Messages -->
+    <div class="nav-item" onclick="switchNav(this, 'messages')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(240,238,232,0.4)" stroke-width="2" stroke-linecap="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span class="nav-label">Messages</span>
+    </div>
+
+    <!-- Profil -->
+    <div class="nav-item" onclick="switchNav(this, 'profile')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(240,238,232,0.4)" stroke-width="2" stroke-linecap="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span class="nav-label">Profil</span>
+    </div>
+
+  </nav>
+
+  <!-- ============================================================
+       TOAST
+       ============================================================ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ============================================================
+       JAVASCRIPT
+       ============================================================ -->
+  <script>
+    /* ── Toast ── */
+    let toastTimer;
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    /* ── Lecture / Pause ── */
+    const playStates = {};
+    function togglePlay(btn, id) {
+      playStates[id] = !playStates[id];
+      const paused = !playStates[id];
+      btn.innerHTML = paused
+        ? `<svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(240,238,232,0.9)"><polygon points="5,3 19,12 5,21"/></svg>`
+        : `<svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(240,238,232,0.9)"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`;
+
+      /* Pause/reprise animation barre de progression */
+      const card  = btn.closest('.video-card');
+      const fill  = card.querySelector('.progress-fill');
+      fill.style.animationPlayState = paused ? 'running' : 'paused';
+    }
+
+    /* ── Like ── */
+    const likeCounts = {};
+    function toggleLike(btn) {
+      btn.classList.toggle('liked');
+      const countEl = btn.querySelector('.action-count');
+      const icon    = btn.querySelector('svg path');
+      const liked   = btn.classList.contains('liked');
+      icon.setAttribute('fill', liked ? 'var(--magenta)' : 'none');
+      icon.setAttribute('stroke', liked ? 'var(--magenta)' : 'var(--text-primary)');
+      showToast(liked ? '❤️ Aimé !' : '🤍 Like retiré');
+
+      /* Animation pulse */
+      const iconWrap = btn.querySelector('.action-icon');
+      iconWrap.style.transform = 'scale(1.25)';
+      setTimeout(() => iconWrap.style.transform = '', 200);
+    }
+
+    /* ── Suivre ── */
+    function toggleFollow(btn) {
+      const following = btn.textContent.trim() === '✓ Suivi';
+      btn.textContent = following ? '+ Suivre' : '✓ Suivi';
+      btn.style.background   = following ? 'transparent' : 'var(--gold)';
+      btn.style.color        = following ? ''             : '#07070d';
+      btn.style.borderColor  = following ? ''             : 'var(--gold)';
+      showToast(following ? 'Abonnement annulé' : '✓ Abonné !');
+    }
+
+    /* ── Partager ── */
+    function shareCard() {
+      if (navigator.share) {
+        navigator.share({ title: 'InkTok', text: 'Regarde cette vidéo sur InkTok !', url: window.location.href })
+          .catch(() => {});
+      } else {
+        showToast('🔗 Lien copié !');
+      }
+    }
+
+    /* ── Navigation basse ── */
+    const navMessages = {
+      discover : '🔍 Découvrir bientôt disponible',
+      messages : '💬 Messages bientôt disponibles',
+      profile  : '👤 Profil bientôt disponible',
+    };
+    function switchNav(item, key) {
+      document.querySelectorAll('.nav-item').forEach(n => {
+        n.classList.remove('active');
+        n.querySelector('.nav-label').style.color = '';
+        n.querySelectorAll('svg path, svg circle, svg polyline, svg line, svg rect').forEach(el => {
+          el.setAttribute('stroke', 'rgba(240,238,232,0.4)');
+        });
+      });
+      if (key === 'home') {
+        item.classList.add('active');
+        item.querySelector('.nav-label').style.color = 'var(--gold-light)';
+        item.querySelectorAll('svg path, svg polyline').forEach(el => {
+          el.setAttribute('stroke', 'var(--gold-light)');
+        });
+      } else {
+        showToast(navMessages[key] || '🚧 Bientôt disponible');
+      }
+    }
+
+    /* ── Onglets feed top ── */
+    function switchFeed(el, tab) {
+      document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      if (tab !== 'pour-toi') showToast('📡 Onglet "' + el.textContent + '" bientôt disponible');
+    }
+
+    /* ── Double-tap to like ── */
+    let lastTap = {};
+    document.querySelectorAll('.video-card').forEach(card => {
+      card.addEventListener('touchend', (e) => {
+        const now  = Date.now();
+        const id   = card.dataset.id;
+        if (lastTap[id] && now - lastTap[id] < 300) {
+          const likeBtn = card.querySelector('.action-btn');
+          if (!likeBtn.classList.contains('liked')) {
+            toggleLike(likeBtn);
+            /* Animation cœur au centre */
+            const heart = document.createElement('div');
+            const tx = e.changedTouches[0].clientX;
+            const ty = e.changedTouches[0].clientY;
+            heart.style.cssText = `
+              position:fixed;left:${tx}px;top:${ty}px;
+              transform:translate(-50%,-50%) scale(0);
+              font-size:64px;z-index:999;
+              animation:heartPop .6s ease forwards;
+              pointer-events:none;
+            `;
+            heart.textContent = '❤️';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 700);
+          }
+        }
+        lastTap[id] = now;
+      });
+    });
+
+    /* ── Style animation cœur ── */
+    const ks = document.createElement('style');
+    ks.textContent = `
+      @keyframes heartPop {
+        0%   { transform: translate(-50%,-50%) scale(0); opacity: 1; }
+        50%  { transform: translate(-50%,-60%) scale(1.3); opacity: 1; }
+        100% { transform: translate(-50%,-80%) scale(1); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(ks);
+
+    /* ── PWA Service Worker ── */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(reg  => console.log('[InkTok SW] Enregistré :', reg.scope))
+          .catch(err => console.warn('[InkTok SW] Erreur :', err));
+      });
+    }
+  </script>
+
+</body>
+</html>
