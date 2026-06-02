@@ -560,27 +560,26 @@
 
     <!-- ── CARTE 1 ── -->
     <article class="video-card" data-id="1">
-      <div class="video-bg">
-        <div class="art-canvas">
-          <!-- Éléments décoratifs -->
-          <div class="deco-ring" style="width:280px;height:280px;border-color:#7b2fd4;top:15%;left:-20%;"></div>
-          <div class="deco-ring" style="width:180px;height:180px;border-color:#c9a84c;bottom:25%;right:-10%;animation-delay:-2s;"></div>
-          <div class="deco-line" style="width:1px;height:200px;top:20%;left:45%;transform:rotate(15deg);"></div>
-          <div class="deco-line" style="width:80px;height:1px;top:60%;left:10%;"></div>
-
-          <!-- Texte art simulé -->
-          <div style="text-align:center;z-index:2;padding:20px;">
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:4px;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;opacity:0.9;">SÉRIGRA<br>PHIE</div>
-            <div style="font-size:11px;letter-spacing:3px;color:var(--gold);margin-top:8px;text-transform:uppercase;font-weight:500;">Impression sur T-shirt · Technique eau</div>
-          </div>
-
-          <!-- Icône play -->
-          <div class="play-btn" id="play1" onclick="togglePlay(this, 'play1')">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(240,238,232,0.9)">
-              <polygon points="5,3 19,12 5,21"/>
-            </svg>
+      <div class="video-bg" style="background:#000;">
+        <!-- Vraie vidéo YouTube — DWrcQMkqJjc -->
+        <div id="yt-thumb-1" style="position:absolute;inset:0;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#000;" onclick="loadYT('1','DWrcQMkqJjc')">
+          <img
+            src="https://img.youtube.com/vi/DWrcQMkqJjc/maxresdefault.jpg"
+            onerror="this.src='https://img.youtube.com/vi/DWrcQMkqJjc/hqdefault.jpg'"
+            style="width:100%;height:100%;object-fit:cover;opacity:0.85;"
+            alt="Sérigraphie MajestePresse"
+          />
+          <div style="position:absolute;width:64px;height:64px;background:rgba(212,49,122,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(212,49,122,0.5);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" style="margin-left:4px;"><polygon points="5,3 19,12 5,21"/></svg>
           </div>
         </div>
+        <iframe
+          id="yt-iframe-1"
+          style="position:absolute;inset:0;width:100%;height:100%;display:none;border:none;"
+          src=""
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
       </div>
       <div class="card-overlay"></div>
 
@@ -648,25 +647,25 @@
 
     <!-- ── CARTE 2 ── -->
     <article class="video-card" data-id="2">
-      <div class="video-bg">
-        <div class="art-canvas">
-          <div class="deco-ring" style="width:320px;height:320px;border-color:#d4317a;top:-10%;right:-15%;"></div>
-          <div class="deco-ring" style="width:150px;height:150px;border-color:#c9a84c;bottom:30%;left:5%;animation-delay:-1.5s;"></div>
-          <div class="deco-line" style="width:120px;height:1px;bottom:40%;right:15%;background:var(--grad-gold);opacity:0.5;"></div>
-
-          <div style="text-align:center;z-index:2;padding:24px;">
-            <div style="font-family:'Cinzel',serif;font-size:13px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;">Atelier Design</div>
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:2px;color:var(--text-primary);line-height:1;opacity:0.95;">LOGO<br><span style="background:var(--grad-neon);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">BRANDING</span></div>
-            <div style="width:60px;height:2px;background:var(--grad-gold);margin:16px auto;border-radius:999px;"></div>
-            <div style="font-size:12px;color:var(--text-muted);letter-spacing:1px;">Process complet en 60 secondes</div>
-          </div>
-
-          <div class="play-btn" id="play2" onclick="togglePlay(this, 'play2')">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(240,238,232,0.9)">
-              <polygon points="5,3 19,12 5,21"/>
-            </svg>
+      <div class="video-bg" style="background:#000;">
+        <div id="yt-thumb-2" style="position:absolute;inset:0;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#000;" onclick="loadYT('2','s2ApEBsCcKg')">
+          <img
+            src="https://img.youtube.com/vi/s2ApEBsCcKg/maxresdefault.jpg"
+            onerror="this.src='https://img.youtube.com/vi/s2ApEBsCcKg/hqdefault.jpg'"
+            style="width:100%;height:100%;object-fit:cover;opacity:0.85;"
+            alt="InkTok video 2"
+          />
+          <div style="position:absolute;width:64px;height:64px;background:rgba(212,49,122,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(212,49,122,0.5);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" style="margin-left:4px;"><polygon points="5,3 19,12 5,21"/></svg>
           </div>
         </div>
+        <iframe
+          id="yt-iframe-2"
+          style="position:absolute;inset:0;width:100%;height:100%;display:none;border:none;"
+          src=""
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
       </div>
       <div class="card-overlay"></div>
 
@@ -732,39 +731,25 @@
 
     <!-- ── CARTE 3 ── -->
     <article class="video-card" data-id="3">
-      <div class="video-bg">
-        <div class="art-canvas">
-          <div class="deco-ring" style="width:240px;height:240px;border-color:#c9a84c;top:30%;left:50%;transform:translateX(-50%);"></div>
-          <div class="deco-line" style="width:1px;height:300px;top:0;left:30%;opacity:0.2;"></div>
-          <div class="deco-line" style="width:1px;height:200px;top:10%;right:25%;opacity:0.15;animation-delay:-1s;"></div>
-
-          <div style="text-align:center;z-index:2;padding:24px;">
-            <div style="font-size:10px;letter-spacing:4px;color:var(--magenta);text-transform:uppercase;font-weight:600;margin-bottom:12px;">Imprimerie Offset</div>
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:58px;letter-spacing:3px;line-height:1;color:var(--text-primary);">FLYERS<br><span style="color:var(--gold);">5000 EX</span></div>
-            <div style="margin-top:20px;display:flex;justify-content:center;gap:16px;">
-              <div style="text-align:center;">
-                <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--violet-light);">4</div>
-                <div style="font-size:9px;color:var(--text-muted);letter-spacing:1px;">COULEURS</div>
-              </div>
-              <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
-              <div style="text-align:center;">
-                <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--violet-light);">135</div>
-                <div style="font-size:9px;color:var(--text-muted);letter-spacing:1px;">G/M²</div>
-              </div>
-              <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
-              <div style="text-align:center;">
-                <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);">A5</div>
-                <div style="font-size:9px;color:var(--text-muted);letter-spacing:1px;">FORMAT</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="play-btn" id="play3" onclick="togglePlay(this, 'play3')">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(240,238,232,0.9)">
-              <polygon points="5,3 19,12 5,21"/>
-            </svg>
+      <div class="video-bg" style="background:#000;">
+        <div id="yt-thumb-3" style="position:absolute;inset:0;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#000;" onclick="loadYT('3','w2ngThCC1dc')">
+          <img
+            src="https://img.youtube.com/vi/w2ngThCC1dc/maxresdefault.jpg"
+            onerror="this.src='https://img.youtube.com/vi/w2ngThCC1dc/hqdefault.jpg'"
+            style="width:100%;height:100%;object-fit:cover;opacity:0.85;"
+            alt="InkTok video 3"
+          />
+          <div style="position:absolute;width:64px;height:64px;background:rgba(212,49,122,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(212,49,122,0.5);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" style="margin-left:4px;"><polygon points="5,3 19,12 5,21"/></svg>
           </div>
         </div>
+        <iframe
+          id="yt-iframe-3"
+          style="position:absolute;inset:0;width:100%;height:100%;display:none;border:none;"
+          src=""
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
       </div>
       <div class="card-overlay"></div>
 
@@ -830,23 +815,25 @@
 
     <!-- ── CARTE 4 ── -->
     <article class="video-card" data-id="4">
-      <div class="video-bg">
-        <div class="art-canvas">
-          <div class="deco-ring" style="width:200px;height:200px;border-color:#a66df5;top:20%;right:5%;"></div>
-          <div class="deco-ring" style="width:350px;height:350px;border-color:#d4317a;bottom:-10%;left:-10%;animation-delay:-3s;"></div>
-
-          <div style="text-align:center;z-index:2;padding:24px;">
-            <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:5px;background:var(--grad-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-transform:uppercase;margin-bottom:16px;">Formation Pro</div>
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:50px;color:var(--text-primary);letter-spacing:2px;line-height:1.1;">MAJESTÉ<br>PRESSE<br><span style="background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">ACADÉMIE</span></div>
-            <div style="margin-top:18px;font-size:12px;color:var(--text-muted);max-width:220px;line-height:1.5;">Rejoins 100 jeunes en formation sérigraphie, graphisme & impression · Cotonou, Bénin</div>
-          </div>
-
-          <div class="play-btn" id="play4" onclick="togglePlay(this, 'play4')">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(240,238,232,0.9)">
-              <polygon points="5,3 19,12 5,21"/>
-            </svg>
+      <div class="video-bg" style="background:#000;">
+        <div id="yt-thumb-4" style="position:absolute;inset:0;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#000;" onclick="loadYT('4','EN-taX5hJIk')">
+          <img
+            src="https://img.youtube.com/vi/EN-taX5hJIk/maxresdefault.jpg"
+            onerror="this.src='https://img.youtube.com/vi/EN-taX5hJIk/hqdefault.jpg'"
+            style="width:100%;height:100%;object-fit:cover;opacity:0.85;"
+            alt="InkTok video 4"
+          />
+          <div style="position:absolute;width:64px;height:64px;background:rgba(212,49,122,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(212,49,122,0.5);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" style="margin-left:4px;"><polygon points="5,3 19,12 5,21"/></svg>
           </div>
         </div>
+        <iframe
+          id="yt-iframe-4"
+          style="position:absolute;inset:0;width:100%;height:100%;display:none;border:none;"
+          src=""
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
       </div>
       <div class="card-overlay"></div>
 
@@ -911,7 +898,80 @@
       <div class="progress-bar"><div class="progress-fill"></div></div>
     </article>
 
-  </main><!-- /feed -->
+  
+    <!-- ── CARTE 5 ── -->
+    <article class="video-card" data-id="5">
+      <div class="video-bg" style="background:#000;">
+        <div id="yt-thumb-5" style="position:absolute;inset:0;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#000;" onclick="loadYT('5','YdrHfcXM4RA')">
+          <img
+            src="https://img.youtube.com/vi/YdrHfcXM4RA/maxresdefault.jpg"
+            onerror="this.src='https://img.youtube.com/vi/YdrHfcXM4RA/hqdefault.jpg'"
+            style="width:100%;height:100%;object-fit:cover;opacity:0.85;"
+            alt="InkTok video 5"
+          />
+          <div style="position:absolute;width:64px;height:64px;background:rgba(212,49,122,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(212,49,122,0.5);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" style="margin-left:4px;"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+        </div>
+        <iframe
+          id="yt-iframe-5"
+          style="position:absolute;inset:0;width:100%;height:100%;display:none;border:none;"
+          src=""
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <div class="card-overlay"></div>
+
+      <div class="card-info">
+        <div class="creator-row">
+          <div class="creator-avatar">MP</div>
+          <div><div class="creator-name">@MajestePresse</div></div>
+          <button class="follow-btn" onclick="toggleFollow(this)">+ Suivre</button>
+        </div>
+        <p class="card-title">Majesté Presse Académie — Formation professionnelle 2026 🎓 Sérigraphie, Graphisme & Impression.</p>
+        <div class="card-tags">
+          <span class="tag">#Académie</span>
+          <span class="tag">#Formation</span>
+          <span class="tag">#Bénin</span>
+        </div>
+        <div class="sound-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+          <span class="sound-label">Son original — MajestePresse</span>
+        </div>
+      </div>
+
+      <div class="side-actions">
+        <div class="action-btn" onclick="toggleLike(this)">
+          <div class="action-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <span class="action-count">3.2K</span>
+        </div>
+        <div class="action-btn" onclick="showToast('💬 Commentaires bientôt disponibles')">
+          <div class="action-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <span class="action-count">198</span>
+        </div>
+        <div class="action-btn" onclick="shareCard()">
+          <div class="action-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+          <span class="action-count">Partager</span>
+        </div>
+        <div class="action-btn" onclick="showToast('🔖 Sauvegardé !')">
+          <div class="action-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <span class="action-count">Sauv.</span>
+        </div>
+      </div>
+
+      <div class="progress-bar"><div class="progress-fill" style="animation-delay:-3s;"></div></div>
+    </article>
+
+</main><!-- /feed -->
 
   <!-- ============================================================
        FOOTER BRAND
@@ -1113,6 +1173,15 @@
     document.head.appendChild(ks);
 
     function goProfile() { window.location.href = 'profil.html'; }
+
+    /* ── Chargement YouTube au clic ── */
+    function loadYT(cardId, videoId) {
+      const thumb  = document.getElementById('yt-thumb-' + cardId);
+      const iframe = document.getElementById('yt-iframe-' + cardId);
+      thumb.style.display  = 'none';
+      iframe.style.display = 'block';
+      iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&playsinline=1&rel=0&modestbranding=1';
+    }
 
     /* ── PWA Service Worker ── */
     if ('serviceWorker' in navigator) {
