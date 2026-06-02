@@ -958,7 +958,7 @@
     </div>
 
     <!-- Profil -->
-    <div class="nav-item" onclick="window.location.href='profil.html'">
+    <div class="nav-item" onclick="goProfile()">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(240,238,232,0.4)" stroke-width="2" stroke-linecap="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
         <circle cx="12" cy="7" r="4"/>
@@ -1043,7 +1043,7 @@
     const navMessages = {
       discover : '🔍 Découvrir bientôt disponible',
       messages : '💬 Messages bientôt disponibles',
-      profile  : '👤 Profil bientôt disponible',
+      profile  : '👤 Profil',
     };
     function switchNav(item, key) {
       document.querySelectorAll('.nav-item').forEach(n => {
@@ -1111,6 +1111,8 @@
       }
     `;
     document.head.appendChild(ks);
+
+    function goProfile() { window.location.href = 'profil.html'; }
 
     /* ── PWA Service Worker ── */
     if ('serviceWorker' in navigator) {
