@@ -1169,11 +1169,8 @@
 
     /* ── Chargement YouTube au clic ── */
     function loadYT(cardId, videoId) {
-      const thumb  = document.getElementById('yt-thumb-' + cardId);
-      const iframe = document.getElementById('yt-iframe-' + cardId);
-      thumb.style.display  = 'none';
-      iframe.style.display = 'block';
-      iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&playsinline=1&rel=0&modestbranding=1';
+      // Ouvre la vidéo dans YouTube directement (100% compatible mobile)
+      window.open('https://www.youtube.com/watch?v=' + videoId, '_blank');
     }
 
     /* ── PWA Service Worker ── */
